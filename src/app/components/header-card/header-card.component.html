@@ -1,0 +1,31 @@
+<div class="news-item-to"
+    (mouseover)="stopAnimation()" 
+    (mouseleave)="startAnimation()"
+    #newsItemTo>
+    <img [src]='newsCard.thumbnail.fileAsBase64' class="news-item-thumbnail-to"/>
+    <div class="text-container-to">
+        <div class="title-text-to">
+            {{newsCard.title}}
+        </div>
+    </div>
+    <div class="items-container-to">
+        <div>
+            <i class="fa fa-eye views-to"></i>
+            <span class="views-num-to">
+                {{newsCard.views}}
+            </span>
+        </div>
+        <div>
+            <i class="fa fa-thumbs-up likes-to"></i>
+            <span class="likes-num-to">
+                {{newsCard.likesNum}}
+            </span>
+        </div>
+        <div>
+            <i class="fa fa-comment comment-to"></i>
+            <span class="comment-num-to">
+                {{newsCard.commentsNum}}
+            </span>
+        </div>
+    </div>
+</div>

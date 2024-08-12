@@ -1,0 +1,20 @@
+<div *ngIf="!user" class="google-icon-wrap">
+    <asl-google-signin-button></asl-google-signin-button>
+    &nbsp;
+    УЛОГУЈТЕ СЕ ПРЕКО ГУГЛА
+</div>
+
+<div *ngIf="user" class="icon-wrap">
+    <div (click)="signOut()" class="log-out">
+        <mat-icon>exit_to_app</mat-icon>
+        &nbsp;
+        ИЗЛОГУЈ СЕ
+    </div>
+    <div class="like" (click)="setLike()">
+        <i *ngIf="like" class="fa-solid fa-thumbs-up"></i>
+        <i *ngIf="!like" class="fa-regular fa-thumbs-up"></i>
+        &nbsp;
+        ЛАЈК
+    </div>
+</div>
+  

@@ -1,0 +1,96 @@
+@import './../../../styles.scss';
+
+:host {
+    display: flex;
+    justify-content: center;
+    max-width: 600px;
+}
+
+.news-item-tr {
+    @extend .news-item;
+    width: 100%;
+
+    @media only screen and (max-width: 900px) {
+        display: flex;
+        flex-direction: column;
+        height: fit-content;
+        width: 320px;
+    }
+
+    .news-item-thumbnail-tr {
+        width: 50%;
+
+        @media only screen and (max-width: 900px) { 
+            width: 100%;
+        }
+
+        height: 170px;
+    }
+
+    .text-container-tr-wrap {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+
+        @media only screen and (max-width: 900px) { 
+            width: 100%;
+        }
+
+        justify-content: space-between;
+
+        .text-container-tr {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            color: black;
+            text-transform: uppercase;
+            font-weight: bold;
+            padding: 10px;
+        }
+
+        .title-text-tr {
+            text-align: justify;
+            word-wrap: break-word;
+        }
+
+        .items-container-tr {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            padding: 0 10px;
+
+            .comment-tr {
+                font-size: 20px;
+                color: #a09d9d;
+            }
+
+            .views-tr {
+                @extend .comment-tr;
+            }
+
+            .likes-tr {
+                @extend .comment-tr;
+            }
+
+            .comment-num-tr {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 20px;
+                height: 20px;
+                font-weight: bold;
+                color: black;
+            }
+
+            .views-num-tr {
+                @extend .comment-num-tr;
+            }
+
+            .likes-num-tr {
+                @extend .comment-num-tr;
+            }
+        }
+    }
+}

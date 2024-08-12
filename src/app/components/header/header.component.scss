@@ -1,0 +1,149 @@
+:host {
+    @media only screen and (min-width: 901px) {
+        display: flex;
+        justify-content: space-between;   
+    }
+
+    background: linear-gradient(180deg, rgba(177,5,29,1), rgba(9,9,121,1) 50%,  62%, rgba(249,249,249,1) 100%);
+}
+
+.menu-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.cyrilic-state {
+
+    width: 320px;
+    height: 200px;
+    margin-bottom: 20px;
+    z-index: 1;
+
+    svg {
+        width: 320px;
+        height: 200px;
+        position: absolute;
+        top: 0;
+        z-index: 1;
+
+        path {
+            fill: transparent;
+        }
+
+        text {
+            fill: white;
+            font-size: 43px;
+            font-weight: bold;
+            z-index: 1;
+        }
+    }
+
+    .logo {
+        position: absolute;
+        left: 0;
+        z-index: 0;
+        width: 320px;
+        height: 200px;
+        padding-left: 10px;
+        opacity: 0.75;
+        border-radius: 30%;
+    }
+}
+
+::ng-deep {
+    .mat-mdc-menu-content {
+        background: linear-gradient(180deg, rgba(177,5,29,1), rgba(9,9,121,1) 50%,  80%, rgba(249,249,249,1) 100%) !important;
+    }
+}
+
+.flag-btn {
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+.flag-list {
+    display: flex;
+    margin-bottom: 10px;
+    align-items: center;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.flag-dropdown-item {
+    margin-left: 30px;
+}
+
+.menu-icon {
+    color: white;
+}
+
+.hamburger-menu {
+    background: linear-gradient(180deg, rgba(177,5,29,1), rgba(9,9,121,1) 50%,  80%, rgba(249,249,249,1) 100%) !important;
+
+    .hamburger-item-wrap {
+        height: 300px;
+        overflow-y: scroll;
+
+        .hamburger-item {
+            display: flex;
+            align-items: center;
+            width: inherit;
+            color: white;
+            font-weight: bold;
+            font-size: 25px;
+            height: 50px;
+            margin-left: 10px;
+        }
+
+        .dropdown-item {
+            @extend .hamburger-item;
+            margin-left: 50px;
+        }
+    }
+}
+
+.search-wrap {
+    display: flex;
+    position: relative;
+    height: min-content;
+
+    .search-btn {
+        color: white;
+    }
+    
+    .search {
+        position: absolute;
+        top: 25%;
+        right: 100%;
+        border-radius: 5px;
+        border-width: 0px;
+        height: 30px;
+
+        .searched-card {
+            background-color: white;
+            position: relative;
+            z-index: 2;
+        }
+    }
+
+    .search-results {
+        height: 300px;
+        top: 50px;
+        border-radius: 10%;
+        z-index: 1;
+        background-color: rgba($color: #000000, $alpha: 0.5);
+    }
+
+    input[type="text"] {
+        padding-block: 0px !important;
+        padding-inline: 0px !important;
+        outline: 0px !important;
+    }
+}
+
+.chosen-item {
+    color: red !important;
+}

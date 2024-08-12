@@ -1,0 +1,28 @@
+<div class="news-item-tr">
+    <img [src]='card.thumbnail.fileAsBase64' class="news-item-thumbnail-tr"/>
+    <div class="text-container-tr-wrap">
+        <div class="text-container-tr">
+            <div class="title-text-tr">{{card.title}}</div>
+        </div>
+        <div class="items-container-tr">
+            <div>
+                <i class="fa fa-eye views-tr"></i>
+                <span class="views-num-tr">
+                    {{card.views}}
+                </span>
+            </div>
+            <div>
+                <i class="fa fa-thumbs-up likes-tr"></i>
+                <span class="likes-num-tr">
+                    {{card.likesNum}}
+                </span>
+            </div>
+            <div>
+                <i class="fa fa-comment comment-tr"></i>
+                <span class="comment-num-tr">
+                    {{card.commentsNum}}
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

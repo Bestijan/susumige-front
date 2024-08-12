@@ -1,0 +1,107 @@
+<div *ngIf="!mobileView" class="cyrilic-state">
+    <svg viewBox="0 0 500 500">
+        <path id="curve" d="M 0 200 C 275 25 275 25 550 200"/>
+        <text width="500">
+            <textPath xlink:href="#curve">
+                {{cyrilicString}}
+            </textPath>
+        </text>
+    </svg>
+    <img class="logo" src="./../../../assets/header/susumiga.png"/>
+</div>
+<div *ngIf="mobileView" appClickOutside [e]="'search-container'" [container]="'search-wrapper'" (outsideEmitter) = 'clickOutside($event)'>
+    <div id="hamburger" class="menu-wrap">
+        <mat-icon (click)="openCloseMenu()" id='menu-wrapper' class="menu-icon">menu</mat-icon>
+        <div class="search-wrap" id="search-wrapper">
+            <input appCyrilicLetter [@search] = 'search' class="search" (cyrilicEmitter)="searchNews($event)" type="text" placeholder="ПРЕТРАГА" #searchInput>
+            <button id="search-container" mat-icon-button (click)="openCloseSearch()">
+                <mat-icon class="search-btn">search</mat-icon>    
+            </button>
+            <div [@search] = 'search' class="search search-results">
+                <app-header-card class="searched-card" *ngFor="let card of cards" [newsCard]="card" [nc]="true" (click) = 'getNews(card.newsId)'></app-header-card>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div [@hamburgerMenu] = 'open' appClickOutside (outsideEmitter) = 'clickOutsideMenu($event)' [e] = "'hamburger-menu-icon'" [container]="'menu-wrapper'">
+    <div id="hamburger-menu-icon" class="hamburger-menu">
+        <div class="cyrilic-state">
+            <svg viewBox="0 0 500 500">
+                <path id="curve" d="M 0 200 C 275 25 275 25 550 200"/>
+                <text width="500">
+                    <textPath xlink:href="#curve">
+                        {{cyrilicString}}
+                    </textPath>
+                </text>
+            </svg>
+            <img class="logo" src="./../../../assets/header/susumiga.png"/>
+        </div>
+        <div class="hamburger-item-wrap">
+            <span class="hamburger-item" (click)="getAllNews(allNewsVar)" [class.chosen-item] = 'newsRepository.section === "СВЕ ВЕСТИ"'>СВЕ ВЕСТИ</span>
+            <mat-divider></mat-divider>
+            <span class="hamburger-item" (click)="openClosedCategory()">
+                КАТЕГОРИЈЕ&nbsp;<mat-icon *ngIf="dropdown === 'closed'">arrow_drop_down</mat-icon>
+                                <mat-icon *ngIf="dropdown === 'open'">arrow_drop_up</mat-icon>
+            </span>
+            <mat-divider></mat-divider>
+            <div [@dropdown] = 'dropdown'>
+                <span class="dropdown-item" (click)="chooseSection('ПОЛИТИКА')" [class.chosen-item] = 'newsRepository.section === "ПОЛИТИКА"'>ПОЛИТИКА</span>
+                <mat-divider></mat-divider>
+                <span class="dropdown-item" (click)="chooseSection('ЖИВОТ')" [class.chosen-item] = 'newsRepository.section === "ЖИВОТ"'>ЖИВОТ</span>
+                <mat-divider></mat-divider>
+                <span class="dropdown-item" (click)="chooseSection('ХРОНИКА')" [class.chosen-item] = 'newsRepository.section === "ХРОНИКА"'>ХРОНИКА</span>
+                <mat-divider></mat-divider>
+                <span class="dropdown-item" (click)="chooseSection('СРБИЈА')" [class.chosen-item] = 'newsRepository.section === "СРБИЈА"'>СРБИЈА</span>
+                <mat-divider></mat-divider>
+                <span class="dropdown-item" (click)="chooseSection('СВЕТ')" [class.chosen-item] = 'newsRepository.section === "СВЕТ"'>СВЕТ</span>
+            </div>
+
+            <span class="hamburger-item" (click)="openClosedLang()">
+                <img src="./../../../assets/header/flags/{{flag.flag}}.png" width="48px" height="48px"/>
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;{{flag.lang}}</span>
+                &nbsp;<mat-icon *ngIf="lang === 'closed'">arrow_drop_down</mat-icon>
+                    <mat-icon *ngIf="lang === 'open'">arrow_drop_up</mat-icon>
+            </span>
+            <mat-divider></mat-divider>
+            <div [@dropdown] = 'lang'>
+                <div class="flag-list flag-dropdown-item" *ngFor="let flag of flags" (click)="showDialog()">
+                    <img src="./../../../assets/header/flags/{{flag.flag}}.png" width="48px" height="48px"/>
+                    <span>&nbsp;&nbsp;&nbsp;&nbsp;{{flag.lang}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<app-carousel [newsCards]="headerCards"></app-carousel>
+
+<div *ngIf="!mobileView" class="search-wrap" appClickOutside [e]="'search-container-desktop'" [container]="'search-wrapper-desktop'" (outsideEmitter) = 'clickOutside($event)'>
+    <div class="menu-wrap">
+        <div class="search-wrap" id="search-wrapper-desktop">
+            <input appCyrilicLetter [@search] = 'search' class="search" (cyrilicEmitter)="searchNews($event)" type="text" placeholder="ПРЕТРАГА" #searchInput>
+            <button id="search-container-desktop" mat-icon-button (click)="openCloseSearch()">
+                <mat-icon class="search-btn">search</mat-icon>    
+            </button>
+            <div [@search] = 'search' class="search search-results">
+                <app-header-card class="searched-card" *ngFor="let card of cards" [newsCard]="card" [nc]="true" (click) = 'getNews(card.newsId)'></app-header-card>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="!mobileView">
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+        <div class="flag-btn">
+            <img src="./../../assets/header/flags/{{flag.flag}}.png"/>
+        </div>
+    </button>
+    <mat-menu #menu="matMenu" class="menu-background">
+        <button mat-menu-item *ngFor="let flag of flags" (click)="showDialog()">
+            <div class="flag-list">
+                <img src="./../../../assets/header/flags/{{flag.flag}}.png" width="48px" height="48px"/>
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;{{flag.lang}}</span>
+            </div>
+        </button>
+    </mat-menu>
+</div>

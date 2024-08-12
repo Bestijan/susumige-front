@@ -1,0 +1,13 @@
+<div *ngIf="user">
+    <div class="comment-wrap">
+        <img [src]="imgUrl"/>
+        <mat-form-field>
+            <mat-label>КОМЕНТАР</mat-label>
+            <input matInput type="text" class="comment-text" (keypress)="setComment($event)" #commentText/>
+        </mat-form-field>
+        <button matRipple class="comment-submit" (click)="sendComment()">ПОШАЉИ</button>
+        <div class="comment-sbmt-arrow-wrap" (click)="sendComment()">
+            <mat-icon class="comment-submit-arrow">keyboard_arrow_right</mat-icon>
+        </div>
+    </div>
+</div>

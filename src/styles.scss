@@ -1,0 +1,125 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import "~@fortawesome/fontawesome-free/css/all.css";
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+app-footer {
+    display: flex;
+    padding: 10px;
+    background: linear-gradient(180deg, rgba(177,5,29,1), rgba(9,9,121,1) 50%,  62%, rgba(249,249,249,1) 100%);
+}
+
+/* Importing Bootstrap SCSS file. */
+@import 'bootstrap/scss/bootstrap';
+
+.news-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    height: 180px;
+    margin: 10px;
+    border-width: 5px;
+    border-style: solid;
+    border-image: linear-gradient(rgba(177,5,29), rgba(9,9,121), rgba(177,5,29), rgba(9,9,121)) 30;
+    background: linear-gradient(90deg, rgba(177,5,29,0.2), rgba(9,9,121,0.2) 50%,  62%, rgba(249,249,249,0.2) 100%);
+}
+
+.thumbnail {
+    
+    @media only screen and (max-width: 900px) {
+        display: flex;
+        width: 85%;
+        height: 100%;
+    }
+}
+
+.thumbnail-source {
+    display: flex;
+    justify-content: flex-start;
+    font-style: italic;
+    font-size: 10px;
+
+    @media only screen and (max-width: 900px) {
+        display: none;
+    }
+}
+
+.title {
+    font-weight: bold;
+    font-size: 40px;
+    word-wrap: break-word;
+    line-height: 40px;
+    text-align: justify;
+    padding-bottom: 20px;
+
+    @media only screen and (max-width: 900px) {
+        font-size: 20px;
+        line-height: 20px;
+    }
+}
+
+.info {
+    display: flex;
+    width: 100%;
+    font-weight: bold;
+
+    @media screen and (max-width: 900px) {
+        flex-direction: column;
+        div {
+            display: flex;
+            .divider {
+                display: none;
+            }
+        }
+    }
+
+    .fa {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+}   
+
+.snipet {
+    @extend .title;
+    display: flex;
+    flex-direction: column;
+    font-size: 30px;
+    line-height: 30px;
+    padding-bottom: 0;
+
+    @media only screen and (max-width: 900px) {
+        font-size: 15px;
+        line-height: 15px;
+    }
+}
+
+.source {
+    font-size: 10px;
+}
+
+.link {
+    display: flex;
+    justify-content: center;
+}
+
+.yt-link {
+    iframe {
+        display: block;
+        margin: 20px auto;
+    }
+}
+
+.image {
+    @extend .thumbnail;
+    margin: 20px 0;
+    flex-direction: column;
+}
+
+.send-news {
+    display: flex;
+    justify-content: center;
+}

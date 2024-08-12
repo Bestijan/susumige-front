@@ -1,0 +1,102 @@
+.center-items {
+    z-index: 0;
+}
+
+::ng-deep {
+    .mdc-evolution-chip-set__chips {
+        display: flex;
+        justify-content: center;
+    }
+
+    .mdc-evolution-chip__cell {
+        width: 100px;
+        justify-content: center;
+    }
+}
+
+.main-card-wrap {
+    width: 100%;
+
+    .section-wrap {
+        display: flex;
+        justify-content: center;
+
+        @media only screen and (max-width: 900px) {
+            display: none;
+        }
+    }
+
+}
+
+.all-news-btn-wrap {
+    margin: 0 10px;
+    border-radius: 30px;
+
+    .all-news-btn {
+        display: flex;
+        align-items: center;
+    }
+
+}
+
+.news-wrapper {
+    display: flex;
+    justify-content: center;
+    position: relative;
+    height: 100%;
+
+    .section-items {
+        display: flex;
+        justify-content: center;
+        height: fit-content;
+
+        .chip {
+            border: 2px solid transparent;
+        }
+
+        .chosen-section {
+            border: 2px solid red;
+        }
+    }
+
+    .side {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+
+    .left-side {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        height: 500px;
+        overflow-y: scroll;
+        background-color: white;
+        margin-top: 10px;
+    }
+
+    .main-card {
+        flex: 5;
+        display: grid;
+        grid: "1fr 1fr"
+              "1fr 1fr";
+        height: 200px;
+    }
+
+    .side-menu {
+        @extend .side;
+        flex: 1;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        min-width: 340px;
+        font-size: 25px;
+        @media only screen and (max-width: 1200px) {
+            display: none;
+        }
+    }
+}
+
+.cards-wrap {
+    margin-top: 40px !important;
+}

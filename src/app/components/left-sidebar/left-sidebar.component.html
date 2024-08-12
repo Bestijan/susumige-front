@@ -1,0 +1,15 @@
+<div [@toggle] = 'open !== "" ? open === "open" ? "open" : "closed" : ""'>
+    <div 
+        [class.left-side] = 'open !== ""'
+        [class.cards-wrap] = 'open === "open" || open === "closed"'>
+        <cdk-virtual-scroll-viewport itemSize="3" 
+                                     class="spinner-wrap" 
+                                     (scroll)="onScroll($event)"
+                                     class="left-side-container">
+            <div *ngFor="let card of cards; let i = index">
+                <mat-spinner *ngIf="i === leftCards.length - 1 && spinner" class="spinner"></mat-spinner>
+                <app-side-card [card]="card" (click) = 'getNews(card.newsId)'></app-side-card>
+            </div>
+        </cdk-virtual-scroll-viewport>
+    </div>
+</div>

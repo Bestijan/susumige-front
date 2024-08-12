@@ -1,0 +1,28 @@
+<div class="news-wrapper">
+
+    <app-left-sidebar></app-left-sidebar>
+
+    <div class="main-card-wrap">
+        <div class="section-wrap">
+            <button *ngIf="open !== ''" mat-button mat-raised-button (click)="openClose()" class="all-news-btn-wrap">
+                <div class="all-news-btn">
+                    <mat-icon *ngIf="open === 'open'">arrow_left</mat-icon>
+                    СВЕ ВЕСТИ
+                    <mat-icon *ngIf="open === 'closed'">arrow_right</mat-icon>
+                </div>
+            </button>
+            <mat-chip-set class="section-items">
+                <mat-chip *ngFor="let sec of sectionArray; let i = index" (click) = 'chooseSection(sec)' 
+                          [class.chosen-section] = 'indexOfSection === i'
+                          class="chip">
+                    {{sec}}
+                </mat-chip>
+            </mat-chip-set>
+        </div>
+        <router-outlet class="center-items"></router-outlet>
+    </div>
+    
+    <div class="side-menu">
+        ОГЛАС
+    </div>
+</div>

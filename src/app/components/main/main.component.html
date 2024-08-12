@@ -1,0 +1,14 @@
+<!-- <cdk-virtual-scroll-viewport itemSize="3"
+                             (scroll)="onScroll()"
+                             *ngIf="mobileView">
+                             <div *ngFor="let card of cardsToShow">
+                                <app-main-card [card]="card" (click) = 'getNews(card.newsId)'></app-main-card>
+                             </div>
+</cdk-virtual-scroll-viewport>
+<ng-container *ngIf="!mobileView">
+
+</ng-container> -->
+
+<div *ngFor="let card of cardsToShow">
+   <app-main-card [card]="card" (click) = 'getNews(card.newsId)'></app-main-card>
+</div>

@@ -1,0 +1,21 @@
+<div class="carousel-wrapper">
+    <div class="carousel">
+        <div class="carets caret-left-position" (click)="moveCarouselRight()" 
+             (mouseover)="pauseCarousel()"
+             (mouseleave)="continueCarousel()">
+            <i class="fa fa-caret-left caret-left"></i>
+        </div>
+        <app-header-card *ngFor="let newsCard of newsCards; trackBy: trackByNews; let i = index;"
+                        class="slide-item"
+                        [newsCard]="newsCard"
+                        [nc]="false"
+                        (onSlidePaused)="animationFinished($event)"
+                        (click)="clickOnCard(newsCard.newsId)">
+        </app-header-card>
+        <div class="carets caret-right-position" (click)="moveCarouselLeft()"
+             (mouseover)="pauseCarousel()"
+             (mouseleave)="continueCarousel()">
+            <i class="fa fa-caret-right caret-left"></i>
+        </div>
+    </div>
+</div>
