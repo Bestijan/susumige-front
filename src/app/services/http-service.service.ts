@@ -9,8 +9,8 @@ import { Comment } from '../models/Comment';
 import { UpdateInfoService } from './update-info.service';
 import { Observable } from 'rxjs';
 
-// const BASE_URL = 'http://localhost:5000/';
-const BASE_URL = 'http://10.111.1.2:8000';
+const BASE_URL = 'http://localhost:8000/';
+// const BASE_URL = 'http://10.111.1.2:8000/';
 @Injectable({
   providedIn: 'root'
 })
