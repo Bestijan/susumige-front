@@ -1,15 +1,19 @@
-#This is an example webapp.io configuration for NodeJS
+#This is an example webapp.io configuration for Angular
 FROM vm/ubuntu:18.04
-# To note: Layerfiles create VMs, *not* containers!
 
-# Install node
+# To note: Layerfiles create entire VMs, *not* containers!
+
+# install node 10
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash && \
-    apt install nodejs && \
+    apt-get install --no-install-recommends gcc g++ make nodejs && \
     rm -f /etc/apt/sources.list.d/nodesource.list
-RUN npm install -g http-server
+
+# install angular CLI
+RUN npm install -g @angular/cli
 
 COPY . .
-RUN echo 'hello' > hello.html
-
-RUN BACKGROUND http-server -p 8000
-EXPOSE WEBSITE http://localhost:8000
+RUN npm install
+RUN ng build --optimization=false
+# small hack - node doesn't persist in destination of a COPY
+RUN BACKGROUND ng serve --host 0.0.0.0 --disable-host-check
+EXPOSE WEBSITE http://localhost:4200
