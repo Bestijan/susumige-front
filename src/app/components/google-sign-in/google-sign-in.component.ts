@@ -30,8 +30,8 @@ export class GoogleSignInComponent {
       this.user = user;
       if (this.user) {
         this.newsRepoSvc.socialUser = new User(user);
-        this.like = this.newsRepoSvc.currentNews!.likes.findIndex(l => l.email === user.email && l.liked) >= 0;
-        this.newsRepoSvc.updateLikesNum(this.newsRepoSvc.currentNews!.newsId, this.like);
+        // this.like = this.newsRepoSvc.currentNews!.likes.findIndex(l => l.email === user.email && l.liked) >= 0;
+        // this.newsRepoSvc.updateLikesNum(this.newsRepoSvc.currentNews!.newsId, this.like);
         this.http.get(this.user.photoUrl, { responseType: 'blob' }).subscribe(result => {
             const reader = new FileReader();
             reader.readAsDataURL(result);

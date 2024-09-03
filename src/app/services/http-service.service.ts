@@ -9,8 +9,7 @@ import { Comment } from '../models/Comment';
 import { UpdateInfoService } from './update-info.service';
 import { Observable } from 'rxjs';
 
-const BASE_URL = 'http://10.111.1.2:8000';
-// const BASE_URL = 'http://10.111.1.2:8000/';
+const BASE_URL = 'https://shushumigelaza-25931.nodechef.com/';
 @Injectable({
   providedIn: 'root'
 })
@@ -56,17 +55,11 @@ export class HttpService {
     }); 
   }
 
-  sendComment(commentText: ElementRef, newsId: string) {
-    const userDTOJSON = {'comment': this.newsRepo.comment, 'commentNick': this.newsRepo.socialUser!.name, 
+  sendComment(comment: string, newsId: string): any {
+    const userDTOJSON = {'comment': comment, 'commentNick': this.newsRepo.socialUser!.name, 
       'img': this.newsRepo.userImg, 'newsId': newsId};
     const userDTO = new UserDTO(userDTOJSON);
-    this.http.post(`${BASE_URL}comment`, userDTO)
-    .subscribe((comment: any) => {
-              commentText.nativeElement.value = '';
-              this.newsRepo.comment = '';
-              this.newsRepo.currentNews!.comments.push(new Comment(comment));
-              this.newsRepo.incCommentsNum(this.newsRepo.currentNews!.newsId);
-    });
+    return this.http.post(`${BASE_URL}comment`, userDTO);
   }
 
   setLike(): any {
