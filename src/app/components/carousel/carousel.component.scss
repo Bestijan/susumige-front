@@ -1,5 +1,7 @@
 :host {
   display: flex;
+  justify-content: center;
+  align-items: center;
 
   width: calc(75% - 100px);
 
@@ -56,4 +58,26 @@
         top: calc(50% - 12.5px);
       }
   }
+}
+
+.loading-wrapper {
+  @extend .carousel-wrapper;
+
+  width: calc(75% - 100px);
+
+  @media only screen and (max-width: 1525px) {
+    width: calc(75% - 200px);
+  }
+
+  @media only screen and (max-width: 1100px) {
+    width: calc(65% - 200px);
+  }
+
+  @media only screen and (max-width: 900px) {
+    width: 100%;
+  }
+}
+
+.loading {
+  background-color: black;
 }

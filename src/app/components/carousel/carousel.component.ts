@@ -1,6 +1,6 @@
 import { AnimationFactory, AnimationPlayer, animate, style, transition, trigger } from '@angular/animations';
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, Input} from '@angular/core';
 import { Route, Router } from '@angular/router';
 import { News } from 'src/app/models/News';
 import { NewsCard } from 'src/app/models/NewsCard';
@@ -24,7 +24,9 @@ import { SlidePausedService } from 'src/app/services/slide-paused.service';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CarouselComponent {
+export class CarouselComponent implements AfterViewInit {
+
+  loading = true;
 
   @Input()
   newsCards!: NewsCard[];
@@ -58,6 +60,10 @@ export class CarouselComponent {
               this.slidePaused.slideStartedSubject.subscribe(() => {
                   this.startCarousel();
               });
+  }
+
+  ngAfterViewInit(): void {
+    this.loading = false;
   }
 
   moveCarouselLeft() {
@@ -121,7 +127,7 @@ export class CarouselComponent {
   }
 
   trackByNews(id: number, news: NewsCard): string {
-      return news ? news.newsId : '';
+    return news ? news.newsId : '';
   }
 }
 

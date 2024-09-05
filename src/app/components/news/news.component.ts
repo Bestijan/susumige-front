@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { INewsItem } from 'src/app/interfaces/INewsItem';
 import { Comment } from 'src/app/models/Comment';
 import { News } from 'src/app/models/News';
@@ -11,10 +11,21 @@ import { NewsRepositoryService } from 'src/app/services/news-repository.service'
   templateUrl: './news.component.html',
   styleUrls: ['./news.component.scss']
 })
-export class NewsComponent {
+export class NewsComponent implements AfterViewInit {
+
+  loading = true;  
 
   constructor(private newsRepo: NewsRepositoryService,
               private checkItemSvc: CheckNewsItemService) {
+  }
+
+  ngAfterViewInit(): void {
+    this.loading = true;
+    this.newsRepo.currentNewsObserver.subscribe(() => {
+        if (this.news) {
+            this.loading = false;
+        }
+    });
   }
 
   get news(): News | null {

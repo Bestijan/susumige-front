@@ -5,9 +5,14 @@
             <mat-label>КОМЕНТАР</mat-label>
             <input matInput type="text" class="comment-text" (keypress)="setComment($event)" #commentText/>
         </mat-form-field>
-        <button matRipple class="comment-submit" (click)="sendComment()">ПОШАЉИ</button>
-        <div class="comment-sbmt-arrow-wrap" (click)="sendComment()">
+        <button *ngIf="!spinner" matRipple class="comment-submit" (click)="sendComment()">ПОШАЉИ</button>
+        <div *ngIf="!spinner" class="comment-sbmt-arrow-wrap" (click)="sendComment()">
             <mat-icon class="comment-submit-arrow">keyboard_arrow_right</mat-icon>
+        </div>
+        <div *ngIf="spinner" class="comment-submit-spinner">
+            <div class="spinner-border text-success" role="status">
+                <span class="sr-only"></span>
+            </div>
         </div>
     </div>
 </div>

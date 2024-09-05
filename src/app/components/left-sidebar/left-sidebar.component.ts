@@ -28,6 +28,8 @@ const THRESHOLD = 25;
 })
 export class LeftSidebarComponent {
 
+  loading = true;
+
   @ViewChild('scroller')
   scroller!: ElementRef;
 
@@ -66,6 +68,7 @@ export class LeftSidebarComponent {
       this.newsRepo.leftSideCards.push(...result);
       this.cards = this.leftCards.slice(this.start, this.end);
       this.spinner = false;
+      this.loading = false;
       this.cdr.detectChanges();
     });
 

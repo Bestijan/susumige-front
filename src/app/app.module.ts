@@ -26,6 +26,10 @@ import { CLIENT_ID } from './constants/client-id';
 import { GoogleSignInComponent } from './components/google-sign-in/google-sign-in.component';
 import { GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
 import { CyrilicLetterDirective } from './directives/cyrilic-letter.directive';
+import { CarouselLoadingComponent } from "./components/carousel-loading/carousel-loading.component";
+import { SideCardLoadingComponent } from './components/side-card-loading/side-card-loading.component';
+import { MainLoadingComponent } from './components/main-loading/main-loading.component';
+import { NewsLoadingComponent } from './components/news-loading/news-loading.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +49,11 @@ import { CyrilicLetterDirective } from './directives/cyrilic-letter.directive';
     ClickOutsideDirective,
     CyrilicLetterDirective,
     CommentsComponent,
-    GoogleSignInComponent
+    GoogleSignInComponent,
+    CarouselLoadingComponent,
+    SideCardLoadingComponent,
+    MainLoadingComponent,
+    NewsLoadingComponent
   ],
   imports: [
     BrowserModule,

@@ -29,6 +29,7 @@ export class HttpService {
             const title = document.getElementById('title');
             title!.innerHTML = this.newsRepo.currentNews!.title;
             this.updateInfoSvc.updateInfoService.next(null);
+            this.newsRepo.currentNewsObserver.next(null);
         });
     }
   }

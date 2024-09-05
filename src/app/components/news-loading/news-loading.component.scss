@@ -1,0 +1,26 @@
+.title {
+    background-color: rgba(128, 128, 128, 0.5) !important;
+    margin-bottom: 10px;
+}
+
+.thumbnail {
+    width: 600px;
+    height: 400px;
+    @extend .title;
+}
+
+.snipet {
+    @extend .title;
+    width: 600px;
+    height: 200px
+}
+
+.info {
+    @extend .title;
+    height: 25px;
+}
+
+.news {
+    @extend .title;
+    height: 100vh;
+}

@@ -1,81 +1,87 @@
-<div class="news-wrap">
-    <div class="title">{{title}}</div>
-    <div class="thumbnail-wrapper">
-        <span class="thumbnail-container">
-            <img [src]='fileAsBase64' class="thumbnail"/>
-        </span>
-        <span class="thumbnail-source-mobile">{{source}}</span>
-        <div class="snipet">
-            <div>
-                {{snipet}}
-            </div>
-            <div class="adds">
-                ОГЛАС
+<ng-container *ngIf="!loading">
+    <div class="news-wrap">
+        <div class="title">{{title}}</div>
+        <div class="thumbnail-wrapper">
+            <span class="thumbnail-container">
+                <img [src]='fileAsBase64' class="thumbnail"/>
+            </span>
+            <span class="thumbnail-source-mobile">{{source}}</span>
+            <div class="snipet">
+                <div>
+                    {{snipet}}
+                </div>
+                <div class="adds">
+                    ОГЛАС
+                </div>
             </div>
         </div>
-    </div>
-
-    <span class="thumbnail-source">{{source}}</span>
-    <div class="info">
-        <div class="section-wrap">
-            <div class="section">{{section}}</div>
-            &nbsp;|&nbsp;
-            <div>Аутор:&nbsp;{{nick}}</div>
-            &nbsp;|&nbsp;
-            <div>{{date | date}}</div>
+    
+        <span class="thumbnail-source">{{source}}</span>
+        <div class="info">
+            <div class="section-wrap">
+                <div class="section">{{section}}</div>
+                &nbsp;|&nbsp;
+                <div>Аутор:&nbsp;{{nick}}</div>
+                &nbsp;|&nbsp;
+                <div>{{date | date}}</div>
+            </div>
+            <div class="icons-wrap">
+                <span class="divider">&nbsp;|&nbsp;</span>
+                <i class="fa fa-eye views-tr"></i>
+                &nbsp;
+                {{views}}
+                &nbsp;|&nbsp;
+                <i class="fa fa-thumbs-up likes-tb"></i>
+                &nbsp;
+                {{likesNum}}
+                &nbsp;|&nbsp;
+                <i class="fa fa-comment comment-tr"></i>
+                &nbsp;
+                {{commentsNum}}
+            </div>
         </div>
-        <div class="icons-wrap">
-            <span class="divider">&nbsp;|&nbsp;</span>
-            <i class="fa fa-eye views-tr"></i>
-            &nbsp;
-            {{views}}
-            &nbsp;|&nbsp;
-            <i class="fa fa-thumbs-up likes-tb"></i>
-            &nbsp;
-            {{likesNum}}
-            &nbsp;|&nbsp;
-            <i class="fa fa-comment comment-tr"></i>
-            &nbsp;
-            {{commentsNum}}
-        </div>
-    </div>
-
-    <ng-container *ngFor="let newsItem of newsItems">
-        <ng-container [ngSwitch]="checkItem.getNewsItemType(newsItem)">
-            <div *ngSwitchCase="'text'" class="news">
-                {{checkItem.convertToText(newsItem).text}}
-            </div>
-            <div *ngSwitchCase="'link'" class="link">
-                <a href={{checkItem.convertToLink(newsItem).link}} target="_blank">
-                    {{checkItem.convertToLink(newsItem).link}}
-                </a>
-            </div>
-            <div *ngSwitchCase="'ytlink'" class="yt-link">
-                <iframe [src]="checkItem.convertToLink(newsItem).link | safe"
-                        display="block"
-                        margin="0 auto"
-                        width="500px" 
-                        height="300px"
-                        frameborder="0" 
-                        webkitallowfullscreen 
-                        mozallowfullscreen 
-                        allowfullscreen> 
-                </iframe>
-            </div>
-            <div *ngSwitchCase="'image'" class="image">
-                <img [src]="checkItem.convertToImage(newsItem).fileAsBase64" />
-                <span class="source">{{checkItem.convertToImage(newsItem).source}}</span>
-            </div>
+    
+        <ng-container *ngFor="let newsItem of newsItems">
+            <ng-container [ngSwitch]="checkItem.getNewsItemType(newsItem)">
+                <div *ngSwitchCase="'text'" class="news">
+                    {{checkItem.convertToText(newsItem).text}}
+                </div>
+                <div *ngSwitchCase="'link'" class="link">
+                    <a href={{checkItem.convertToLink(newsItem).link}} target="_blank">
+                        {{checkItem.convertToLink(newsItem).link}}
+                    </a>
+                </div>
+                <div *ngSwitchCase="'ytlink'" class="yt-link">
+                    <iframe [src]="checkItem.convertToLink(newsItem).link | safe"
+                            display="block"
+                            margin="0 auto"
+                            width="500px" 
+                            height="300px"
+                            frameborder="0" 
+                            webkitallowfullscreen 
+                            mozallowfullscreen 
+                            allowfullscreen> 
+                    </iframe>
+                </div>
+                <div *ngSwitchCase="'image'" class="image">
+                    <img [src]="checkItem.convertToImage(newsItem).fileAsBase64" />
+                    <span class="source">{{checkItem.convertToImage(newsItem).source}}</span>
+                </div>
+            </ng-container>
         </ng-container>
-    </ng-container>
-</div>
-<app-google-sign-in></app-google-sign-in>
-<app-comments [newsId]="newsId"></app-comments>
-<div *ngFor="let c of comments" class="comment-wrap">
-    <div>
-        <img [src]="c.img"/>
-        <span class="nick">{{c.commentNick}}</span>
     </div>
-    <span class="text">{{c.commentText}}</span>
-    <mat-divider></mat-divider>
-</div>
+    <div *ngFor="let c of comments; let i = index" class="comment-wrap">
+        <div>
+            <img [src]="c.img"/>
+            <span class="nick">{{c.commentNick}}</span>
+        </div>
+        <span class="text">{{c.commentText}}</span>
+        <mat-divider></mat-divider>
+    </div>
+    <app-google-sign-in></app-google-sign-in>
+    <app-comments [newsId]="newsId"></app-comments>
+</ng-container>
+<ng-container *ngIf="loading">
+    <app-news-loading></app-news-loading>
+</ng-container>
+

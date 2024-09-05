@@ -9,5 +9,5 @@ import { NewsCard } from 'src/app/models/NewsCard';
 export class SideCardComponent {
 
   @Input()
-  card!: NewsCard
+  card!: NewsCard;
 }

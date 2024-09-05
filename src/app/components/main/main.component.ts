@@ -15,6 +15,8 @@ const THRESHOLD = 25;
 })
 export class MainComponent implements AfterViewInit {
 
+  loading = true;
+
   @ViewChild(CdkVirtualScrollViewport) virtualScroll!: CdkVirtualScrollViewport;
 
   cardsToShow = new Array<NewsCard>();
@@ -30,11 +32,15 @@ export class MainComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.newsRepo.cardsExists.subscribe((news: NewsCard[]) => {
         this.cardsToShow = news;
+        if (this.cardsToShow.length > 0) {
+            this.loading = false;
+        }
     });
   }
 
   getNews(newsId: string) {
     this.router.navigate(['news/' + newsId]);
+    this.newsRepo.currentNewsObserver.next(null);
   }
 
   onScroll() {

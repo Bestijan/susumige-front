@@ -17,9 +17,10 @@ export class CommentsComponent {
   @Input()
   newsId!: string;
 
+  spinner = false;
+
   constructor(private newsRepo: NewsRepositoryService,
-              private httpSvc: HttpService
-  ) {
+              private httpSvc: HttpService  ) {
     this.newsRepo.comment = '';
   }
 
@@ -28,12 +29,18 @@ export class CommentsComponent {
   }
 
   sendComment() {
-    this.httpSvc.sendComment(this.commentText!.nativeElement.value, this.newsId).subscribe((comment: any) => {
-      this.newsRepo.comment = '';
-      this.newsRepo.currentNews!.comments.push(new Comment(comment));
-      this.newsRepo.incCommentsNum(this.newsRepo.currentNews!.newsId);
-      this.commentText!.nativeElement.value = '';
-    });;
+    if (this.commentText!.nativeElement.value !== '') {
+        this.spinner = true;
+        this.httpSvc.sendComment(this.commentText!.nativeElement.value, this.newsId).subscribe((comment: any) => {
+          this.newsRepo.comment = '';
+          this.newsRepo.currentNews!.comments.push(new Comment(comment));
+          this.newsRepo.incCommentsNum(this.newsRepo.currentNews!.newsId);
+          this.commentText!.nativeElement.value = '';
+          this.spinner = false;
+        }, (error: any) => {
+            this.spinner = false;
+        });
+    }
   }
 
   get user(): User | null {

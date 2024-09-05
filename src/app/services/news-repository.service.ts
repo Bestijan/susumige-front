@@ -11,6 +11,8 @@ export class NewsRepositoryService {
 
   private cardsAvailable: BehaviorSubject<NewsCard[]> = new BehaviorSubject(new Array());
 
+  private currentCardAvailible = new BehaviorSubject<null>(null);
+
   private headCards = new Array<NewsCard>();
 
   private leftCards = new Array<NewsCard>();
@@ -117,6 +119,10 @@ export class NewsRepositoryService {
 
   get currentNews(): News | null {
       return this.news;
+  }
+
+  get currentNewsObserver(): BehaviorSubject<null> {
+      return this.currentCardAvailible;
   }
 
   set mainCards(cards: NewsCard[]) {
