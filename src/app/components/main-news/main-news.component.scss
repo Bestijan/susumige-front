@@ -31,8 +31,14 @@
 .all-news-btn-wrap {
     margin: 0 10px;
     border-radius: 30px;
+    display: none;
 
     .all-news-btn {
+        display: flex;
+        align-items: center;
+    }
+
+    @media only screen and (max-width: 1300px) {
         display: flex;
         align-items: center;
     }
@@ -91,7 +97,7 @@
         align-items: center;
         min-width: 340px;
         font-size: 25px;
-        @media only screen and (max-width: 1200px) {
+        @media only screen and (max-width: 1300px) {
             display: none;
         }
     }

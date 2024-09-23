@@ -44,42 +44,47 @@ export class CyrilicLetterDirective {
   
   constructor() { }
 
-  @HostListener('keydown', ['$event'])
-  onTypeCyrilic($event: KeyboardEvent) {
-         if (KEY_BOARD_EVENTS.findIndex(kbe => kbe === $event.key) >= 0) {
+  @HostListener('input', ['$event'])
+  onTypeCyrilic($event: InputEvent) {
+         if (!$event.data) {
              return;
          }
-         if ($event.ctrlKey) {
-            if ($event.key === 'v' || $event.key === 'V') {
+         if (KEY_BOARD_EVENTS.findIndex(kbe => kbe === $event.data) >= 0) {
+             return;
+         }
+         if ($event.data) {
+            if ($event.data === 'v' || $event.data === 'V') {
                 return;
-            } else if ($event.key === 'c' || $event.key === 'C') {
+            } else if ($event.data === 'c' || $event.data === 'C') {
                 return;
             }
         }
-        $event.preventDefault();       
-        if (this.alphabetArrayUpper.findIndex(a => a === $event.key) >= 0) {
-             this.cyrilicEmitter.emit(this.cyrilicArrayUpper[this.alphabetArrayUpper.findIndex(a => a === $event.key)]);
-         } else if (this.alphabetArray.findIndex(a => a === $event.key) >= 0) {
-             this.cyrilicEmitter.emit(this.cyrilicArray[this.alphabetArray.findIndex(la => la === $event.key)]);
-         } else if (this.latinicArrayUpper.findIndex(a => a === $event.key) >= 0) {
-             this.cyrilicEmitter.emit(this.cyrilicArrayUpper[this.latinicArrayUpper.findIndex(la => la === $event.key)]);
-         } else if (this.latinicArray.findIndex(a => a === $event.key) >= 0) {
-             this.cyrilicEmitter.emit(this.cyrilicArray[this.latinicArray.findIndex(la => la === $event.key)]);
-         } else if (this.cyrilicArray.findIndex(c => c === $event.key) >= 0) {
-             this.cyrilicEmitter.emit($event.key);
-         } else if (this.cyrilicArrayUpper.findIndex(c => c === $event.key) >= 0) {
-             this.cyrilicEmitter.emit($event.key);
-         } else if ($event.shiftKey) {
-            if ($event.key === '_') {
+        
+        $event.preventDefault();
+
+        if (this.alphabetArrayUpper.findIndex(a => a === $event.data) >= 0) {
+             this.cyrilicEmitter.emit(this.cyrilicArrayUpper[this.alphabetArrayUpper.findIndex(a => a === $event.data)]);
+         } else if (this.alphabetArray.findIndex(a => a === $event.data) >= 0) {
+             this.cyrilicEmitter.emit(this.cyrilicArray[this.alphabetArray.findIndex(la => la === $event.data)]);
+         } else if (this.latinicArrayUpper.findIndex(a => a === $event.data) >= 0) {
+             this.cyrilicEmitter.emit(this.cyrilicArrayUpper[this.latinicArrayUpper.findIndex(la => la === $event.data)]);
+         } else if (this.latinicArray.findIndex(a => a === $event.data) >= 0) {
+             this.cyrilicEmitter.emit(this.cyrilicArray[this.latinicArray.findIndex(la => la === $event.data)]);
+         } else if (this.cyrilicArray.findIndex(c => c === $event.data) >= 0) {
+             this.cyrilicEmitter.emit($event.data);
+         } else if (this.cyrilicArrayUpper.findIndex(c => c === $event.data) >= 0) {
+             this.cyrilicEmitter.emit($event.data);
+         } else if ($event.data) {
+            if ($event.data === '_') {
                 this.cyrilicEmitter.emit(OPEN_QUOTE);
-            } else if ($event.key === '+') {
+            } else if ($event.data === '+') {
                 this.cyrilicEmitter.emit(CLOSED_QUOTE);
-            } else if (SPECIAL_CHARS.findIndex(sc => sc === $event.key) >= 0) {
-                this.cyrilicEmitter.emit($event.key);
+            } else if (SPECIAL_CHARS.findIndex(sc => sc === $event.data) >= 0) {
+                this.cyrilicEmitter.emit($event.data);
             }
-        } else if (NUMBERS.findIndex(n => n === $event.key) >= 0 || SPECIAL_CHARS.findIndex(sc => sc === $event.key) >= 0) {
-             this.cyrilicEmitter.emit($event.key);
-         } 
+        } else if (NUMBERS.findIndex(n => n === $event.data) >= 0 || SPECIAL_CHARS.findIndex(sc => sc === $event.data) >= 0) {
+             this.cyrilicEmitter.emit($event.data);
+        } 
   }
 
 }

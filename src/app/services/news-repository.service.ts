@@ -17,6 +17,8 @@ export class NewsRepositoryService {
 
   private leftCards = new Array<NewsCard>();
 
+  private leftCardsDate!: string;
+
   private cards = new Array<NewsCard>();
 
   private news!: News | null;
@@ -159,5 +161,13 @@ export class NewsRepositoryService {
 
   set comment(comment: string) {
       this.c = comment;
+  }
+
+  set dateLeftSidebar(date: string) {
+      this.leftCardsDate = date;
+  }
+
+  get dateLeftSidebar(): string {
+      return this.leftCardsDate;
   }
 }

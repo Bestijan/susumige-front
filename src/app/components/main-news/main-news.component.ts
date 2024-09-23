@@ -21,7 +21,7 @@ import { ShowLeftSidebarService } from 'src/app/services/show-left-sidebar.servi
 })
 export class MainNewsComponent implements OnInit {
 
-    open = '';
+    open = 'closed';
 
     section = ''
 

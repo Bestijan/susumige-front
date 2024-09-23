@@ -9,22 +9,17 @@ export class TextService {
   @Input()
   private tn!: ElementRef;
 
-  private position = 0;
-
   constructor() { }
 
   setText(letter: string) {
-    const offset = this.textNews.nativeElement.selectionStart + 1;
-    this.textNews.nativeElement.value = 
-    this.textNews.nativeElement.value.replaceAt(this.textNews.nativeElement.selectionStart, letter);
-    if (this.position > offset) {
-        this.textNews.nativeElement.focus();
-        this.position = this.textNews.nativeElement.selectionStart + 1;
-        this.textNews.nativeElement.setSelectionRange(offset, offset);
+    if (this.textNews.nativeElement.value.length === 1) {
+        this.textNews.nativeElement.value = '';
     } else {
-        this.position = this.textNews.nativeElement.selectionStart + 1;
-        this.textNews.nativeElement.setSelectionRange(this.position, this.position);
+      this.textNews.nativeElement.value = this.textNews
+                                              .nativeElement.value
+                                              .slice(0, this.textNews.nativeElement.value.length - 1);
     }
+    this.textNews.nativeElement.value += letter;
   }
 
   set textNews(textNews: ElementRef) {

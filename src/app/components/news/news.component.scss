@@ -33,7 +33,24 @@
     height: 100%;
     font-weight: normal;
 
+    @media only screen and (max-width: 1400px) {
+        display: none;
+    }
+
     @media only screen and (max-width: 900px) {
+        display: none;
+    }
+}
+
+.advertisement {
+    @extend .adds;
+    @media only screen and (max-width: 1400px) and (min-width: 1200px) {
+        display: flex;
+        font-size: 30px;
+        height: 200px;
+    }
+
+    @media only screen and (min-width: 1401px) {
         display: none;
     }
 }

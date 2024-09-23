@@ -4,6 +4,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, View
 import { Router } from '@angular/router';
 import { NewsCard } from 'src/app/models/NewsCard';
 import { HttpService } from 'src/app/services/http-service.service';
+import { LeftsideCardsService } from 'src/app/services/leftside-cards.service';
 import { NewsRepositoryService } from 'src/app/services/news-repository.service';
 import { ShowLeftSidebarService } from 'src/app/services/show-left-sidebar.service';
 import { UpdateInfoService } from 'src/app/services/update-info.service';
@@ -18,8 +19,8 @@ const THRESHOLD = 25;
   styleUrls: ['./left-sidebar.component.scss'],
   animations: [
     trigger('toggle', [
-        state('closed', style({ transform : 'translateX(-100%)', zIndex: '1', position: 'absolute', visibility: 'hidden'})),
-        state('open', style({ transform: 'translateX(0%)', zIndex: '1', position: 'absolute' })),
+        state('closed', style({ transform : 'translateX(-100%)', display: 'block', zIndex: '1', position: 'absolute'})),
+        state('open', style({ transform: 'translateX(0%)', display: 'block', zIndex: '1', position: 'absolute' })),
         transition('closed => open', animate(200)),
         transition('open => closed', animate(200))
     ])
@@ -39,9 +40,11 @@ export class LeftSidebarComponent {
 
   spinner = false;
 
-  start = 0;
-  
-  end = 3;
+  bottomReached = false;
+
+  topReached = false;
+
+  firstDate!: Date;
 
   cards = new Array<NewsCard>();
 
@@ -52,58 +55,99 @@ export class LeftSidebarComponent {
               private showSidebar: ShowLeftSidebarService,
               private cdr: ChangeDetectorRef,
               private httpSvc: HttpService,
-              private updateInfoSvc: UpdateInfoService
+              private updateInfoSvc: UpdateInfoService,
+              private leftsideCardsSvc: LeftsideCardsService
     ) {
     
+    this.setOpen();
+
     this.showSidebar.showSidebar.subscribe((value) => {
       this.open = value;
-    });
-
-    if (this.isLeftSideVisible) {
-        this.open = 'closed';
-    }
-
-    this.spinner = true;
-    this.httpSvc.getAllNewsLeftSidebar().subscribe((result: any) => {
-      this.newsRepo.leftSideCards.push(...result);
-      this.cards = this.leftCards.slice(this.start, this.end);
-      this.spinner = false;
-      this.loading = false;
       this.cdr.detectChanges();
     });
 
     this.updateInfoSvc.updateInfoService.subscribe(() => {
         this.cdr.detectChanges();
     });
+
+    this.leftsideCardsSvc.leftSideCards.subscribe(() => {
+        this.cards = this.leftCards;
+        this.loading = false;
+        this.firstDate = new Date(this.newsRepo.leftSideCards[0].date);
+        this.cdr.detectChanges();  
+    });
+  }
+
+  private loadOlderCards() {
+    this.spinner = true;
+    this.newsRepo.dateLeftSidebar = new Date(this.newsRepo.leftSideCards[0].date).toUTCString();
+    this.httpSvc.getOlderNewsLeftSidebar()
+        .subscribe((result: any) => {
+          if (result) {
+              this.setOldCards(result);
+              this.topReached = false;
+              this.virtualScroll.elementRef.nativeElement.scrollTop = 100;
+          } else {
+              this.topReached = true;
+              this.bottomReached = false;
+          }
+          this.spinner = false;
+          this.cdr.detectChanges();
+        });
+  }
+
+  private loadNewerCards() {
+    this.spinner = true;
+    this.newsRepo.dateLeftSidebar = new Date(this.leftCards[this.newsRepo.leftSideCards.length - 1].date).toISOString();
+    this.httpSvc.getNewerNewsLeftSidebar()
+      .subscribe((result: any) => {
+        if (result) {
+            this.setNewCards(result);
+            this.bottomReached = false;
+            this.virtualScroll.elementRef.nativeElement.scrollTop = this.virtualScroll.elementRef.nativeElement.scrollTop - 100;
+        } else {
+            this.bottomReached = true;
+            this.topReached = false;
+        }
+        this.spinner = false;
+        this.cdr.detectChanges();
+      });
+  }
+
+  private setNewCards(result: any) {
+    if (this.leftCards.findIndex((lc: NewsCard) => lc.newsId === result.newsId) < 0) {
+        this.leftCards.shift();
+        this.leftCards.push(result);
+        this.cards = this.leftCards;
+        this.loading = false;
+    }
+    this.spinner = false;
+  }
+
+  private setOldCards(result: any) {
+    if (this.leftCards.findIndex((lc: NewsCard) => lc.newsId === result.newsId) < 0) {
+        this.leftCards.unshift(result);
+        this.leftCards.pop();
+        this.cards = this.leftCards;
+        this.loading = false;
+    }
+    this.spinner = false;
   }
 
   onScroll(event: any) {
-    const offset = this.virtualScroll.measureScrollOffset();
-    const viewHeight = this.virtualScroll.getViewportSize();
-    const totalHeight = this.virtualScroll.measureRenderedContentSize();
-
-    if (offset + viewHeight >= totalHeight - THRESHOLD && this.end < this.leftCards.length) {
-      if (this.end > this.leftCards.length) {
-          this.start -= OFFSET;
-          this.end -= OFFSET;
-      } else {
-          this.start += OFFSET;
-          this.end += OFFSET;
-      }
-      this.cards = this.leftCards.slice(this.start, this.end);
-      this.cdr.detectChanges();
-      this.virtualScroll.elementRef.nativeElement.scrollTop = 10;
-    } else if (offset < 10 && this.start > 0) {
-      if (this.start < 0) {
-          this.start += OFFSET;
-          this.end = START;
-      } else {
-          this.start -= OFFSET;
-          this.end -= OFFSET;
-      }
-      this.cards = this.leftCards.slice(this.start, this.end);
-      this.cdr.detectChanges();
-      this.virtualScroll.elementRef.nativeElement.scrollTop = 50;
+    if (!this.spinner) {
+        const offset = this.virtualScroll.measureScrollOffset();
+        const viewHeight = this.virtualScroll.getViewportSize();
+        const totalHeight = this.virtualScroll.measureRenderedContentSize();    
+        if (offset + viewHeight >= totalHeight - THRESHOLD) {
+            if (!this.bottomReached) {
+                this.loadNewerCards();
+            }
+        } else if (offset === 0) {
+          if (!this.topReached) {
+              this.loadOlderCards();
+          }
+        }
     }
   }
 
@@ -115,11 +159,13 @@ export class LeftSidebarComponent {
     this.open === '' ? this.open = 'open' : this.open === 'open' ? this.open = 'closed' : this.open = 'open';
   }
 
-  get leftCards(): NewsCard[] {
-    return this.newsRepo.leftSideCards;
+  private setOpen() {
+    if (window.innerWidth < 1300) {
+        this.open = 'closed';
+    }
   }
 
-  get isLeftSideVisible(): boolean {
-    return window.innerWidth <= 1200;
+  get leftCards(): NewsCard[] {
+    return this.newsRepo.leftSideCards;
   }
 }

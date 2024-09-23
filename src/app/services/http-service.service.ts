@@ -8,8 +8,10 @@ import { UserDTO } from '../models/UserDTO';
 import { Comment } from '../models/Comment';
 import { UpdateInfoService } from './update-info.service';
 import { Observable } from 'rxjs';
+import { LeftsideCardsService } from './leftside-cards.service';
 
-const BASE_URL = 'https://shushumigelaza-25931.nodechef.com/';
+// const BASE_URL = 'https://shushumigelaza-25931.nodechef.com/';
+const BASE_URL = 'http://localhost:3000/';
 @Injectable({
   providedIn: 'root'
 })
@@ -18,7 +20,8 @@ export class HttpService {
   constructor(private newsRepo: NewsRepositoryService,
               private http: HttpClient,
               private router: Router,
-              private updateInfoSvc: UpdateInfoService) { }
+              private updateInfoSvc: UpdateInfoService,
+              private leftsideCardsSvc: LeftsideCardsService) { }
 
   getNews(newsId: string) {
     if (!this.newsRepo.currentNews || (this.newsRepo.currentNews && this.newsRepo.currentNews.newsId !== newsId)) {
@@ -48,6 +51,8 @@ export class HttpService {
     this.http.get(`${BASE_URL}bundle-news`, { headers: new HttpHeaders({
       'Content-Type': 'application/json'
     })}).subscribe((res: any) => {
+        this.newsRepo.leftSideCards = res.leftNews;
+        this.leftsideCardsSvc.leftSideCards.next(null);
         this.newsRepo.headerCards = res.header;
         this.newsRepo.mainCards = res.main;
         if (this.router.url === '') {
@@ -78,8 +83,12 @@ export class HttpService {
     return this.http.get(`${BASE_URL}all-news`, { headers: new HttpHeaders({'Content-Type': 'application/json'})});
   }
 
-  getAllNewsLeftSidebar(): any {
-    return this.http.get(`${BASE_URL}all-news`, { headers: new HttpHeaders({'Content-Type': 'application/json'})});
+  getOlderNewsLeftSidebar(): any {
+    return this.http.get(`${BASE_URL}older-news?date=${this.newsRepo.dateLeftSidebar}`, { headers: new HttpHeaders({'Content-Type': 'application/json'})});
+  }
+
+  getNewerNewsLeftSidebar(): any {
+    return this.http.get(`${BASE_URL}newer-news?date=${this.newsRepo.dateLeftSidebar}`, { headers: new HttpHeaders({'Content-Type': 'application/json'})});
   }
 
   getSectionNews(section: string): any {

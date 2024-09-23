@@ -1,19 +1,21 @@
-<div [@toggle] = 'open !== "" ? open === "open" ? "open" : "closed" : ""'>
+<div [@toggle] = 'open !== "" ? open === "open" ? "open" : "closed" : ""' class="closed">
     <div
         [class.left-side] = 'open !== ""'
         [class.cards-wrap] = 'open === "open" || open === "closed"'>
-        <cdk-virtual-scroll-viewport
-                                     itemSize="3" 
-                                     class="spinner-wrap" 
+        <cdk-virtual-scroll-viewport itemSize="3" 
+                                     class="scroll-wrap" 
                                      (scroll)="onScroll($event)"
                                      class="left-side-container">
             <ng-container *ngIf="!loading">
                 <div *ngFor="let card of cards; let i = index">
-                    <mat-spinner *ngIf="i === leftCards.length - 1 && spinner" class="spinner"></mat-spinner>
+                    <div *ngIf="spinner && (i === 0 || i === cards.length - 1)" class="spinner-container">
+                        <mat-spinner class="loading-spinner"></mat-spinner>
+                    </div>
                     <app-side-card [card]="card" (click) = 'getNews(card.newsId)'></app-side-card>
                 </div>
             </ng-container>
         </cdk-virtual-scroll-viewport>
     </div>
+    <app-side-card-loading *ngIf="loading" class="toggle-loading"></app-side-card-loading>
 </div>
-<app-side-card-loading *ngIf="loading"></app-side-card-loading>
+<app-side-card-loading *ngIf="loading" class="loading"></app-side-card-loading>
