@@ -81,7 +81,10 @@
         <span class="text">{{c.commentText}}</span>
         <mat-divider></mat-divider>
     </div>
-    <app-google-sign-in></app-google-sign-in>
+
+    <div class="sign-in-wrap">
+        <app-google-sign-in></app-google-sign-in>
+    </div>
     <app-comments [newsId]="newsId"></app-comments>
 </ng-container>
 <ng-container *ngIf="loading">

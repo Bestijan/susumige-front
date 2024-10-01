@@ -10,6 +10,8 @@ const NUMBERS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
 
 const KEY_BOARD_EVENTS = ['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Backspace', 'Delete', 'Tab'];
 
+const PASTE = 'insertFromPaste';
+
 @Directive({
   selector: '[appCyrilicLetter]'
 })
@@ -46,19 +48,12 @@ export class CyrilicLetterDirective {
 
   @HostListener('input', ['$event'])
   onTypeCyrilic($event: InputEvent) {
-         if (!$event.data) {
+         if (!$event.data || $event.inputType === PASTE) {
              return;
          }
          if (KEY_BOARD_EVENTS.findIndex(kbe => kbe === $event.data) >= 0) {
              return;
          }
-         if ($event.data) {
-            if ($event.data === 'v' || $event.data === 'V') {
-                return;
-            } else if ($event.data === 'c' || $event.data === 'C') {
-                return;
-            }
-        }
         
         $event.preventDefault();
 

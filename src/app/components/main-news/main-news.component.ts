@@ -1,11 +1,11 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 import { NewsCard } from 'src/app/models/NewsCard';
 import { NewsRepositoryService } from 'src/app/services/news-repository.service';
 import { SectionService } from 'src/app/services/section.service';
 import { ShowLeftSidebarService } from 'src/app/services/show-left-sidebar.service';
-
 @Component({
   selector: 'app-main-news',
   templateUrl: './main-news.component.html',
@@ -46,7 +46,13 @@ export class MainNewsComponent implements OnInit {
     }
 
     chooseSection(s: string) {
-        this.router.navigate(['section/' + s]);
+        if (s === this.newsRepo.section) { 
+            this.router.navigate(['']);
+            this.newsRepo.section = '';
+        } else {
+            this.router.navigate(['section/' + s]);
+        }
+        this.sectionSvc.sectionLoading.next(true);
     }
 
     get indexOfSection(): number {
@@ -55,5 +61,9 @@ export class MainNewsComponent implements OnInit {
 
     get mainCards(): NewsCard[] {
         return this.newsRepo.mainCards;
+    }
+
+    get sectionLoading(): BehaviorSubject<boolean> {
+        return this.sectionSvc.sectionLoading;
     }
 }

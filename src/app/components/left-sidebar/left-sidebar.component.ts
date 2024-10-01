@@ -81,7 +81,7 @@ export class LeftSidebarComponent {
   private loadOlderCards() {
     this.spinner = true;
     this.newsRepo.dateLeftSidebar = new Date(this.newsRepo.leftSideCards[0].date).toUTCString();
-    this.httpSvc.getOlderNewsLeftSidebar()
+    this.httpSvc.getOlderNews()
         .subscribe((result: any) => {
           if (result) {
               this.setOldCards(result);
@@ -99,7 +99,7 @@ export class LeftSidebarComponent {
   private loadNewerCards() {
     this.spinner = true;
     this.newsRepo.dateLeftSidebar = new Date(this.leftCards[this.newsRepo.leftSideCards.length - 1].date).toISOString();
-    this.httpSvc.getNewerNewsLeftSidebar()
+    this.httpSvc.getNewerNews()
       .subscribe((result: any) => {
         if (result) {
             this.setNewCards(result);

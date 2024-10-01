@@ -1,22 +1,24 @@
-<!-- <cdk-virtual-scroll-viewport itemSize="3"
+<cdk-virtual-scroll-viewport itemSize="3"
                              (scroll)="onScroll()"
                              *ngIf="mobileView">
-                             <div *ngFor="let card of cardsToShow">
-                                <app-main-card [card]="card" (click) = 'getNews(card.newsId)'></app-main-card>
+                             <div *ngFor="let card of cardsToShow; let i = index">
+                                 <div *ngIf="spinner && (i === 0 || i === cardsToShow.length - 1)" class="spinner-container">
+                                    <mat-spinner class="loading-spinner"></mat-spinner>
+                                 </div>
+                                 <app-main-card [card]="card" (click) = 'getNews(card.newsId)'></app-main-card>
                              </div>
 </cdk-virtual-scroll-viewport>
+
 <ng-container *ngIf="!mobileView">
-
-</ng-container> -->
-
-<ng-container *ngIf="!loading">
-   <div *ngFor="let card of cardsToShow">
-      <app-main-card [card]="card" (click) = 'getNews(card.newsId)'></app-main-card>
-   </div>
-</ng-container>
-<ng-container *ngIf="loading">
-   <app-main-loading></app-main-loading>
-   <app-main-loading></app-main-loading>
-   <app-main-loading></app-main-loading>
-   <app-main-loading></app-main-loading>
+   <ng-container *ngIf="!(sectionLoading | async)">
+      <div *ngFor="let card of cardsToShow">
+         <app-main-card [card]="card" (click) = 'getNews(card.newsId)'></app-main-card>
+      </div>
+   </ng-container>
+   <ng-container *ngIf="(sectionLoading | async)">
+      <app-main-loading></app-main-loading>
+      <app-main-loading></app-main-loading>
+      <app-main-loading></app-main-loading>
+      <app-main-loading></app-main-loading>
+   </ng-container>
 </ng-container>

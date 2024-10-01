@@ -1,5 +1,11 @@
 .center-items {
     z-index: 0;
+    position: relative;
+}
+
+.loading-items {
+    position: absolute;
+    z-index: 1;
 }
 
 ::ng-deep {
@@ -50,6 +56,12 @@
     justify-content: center;
     position: relative;
     height: 100%;
+
+    .loading-spinner {
+        position: absolute;
+        top: 25%;
+        left: 25%;
+    }
 
     .section-items {
         display: flex;

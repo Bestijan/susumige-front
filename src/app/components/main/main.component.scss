@@ -1,20 +1,19 @@
 :host {
     display: grid;
-    height: 100%;
     grid: "1fr 1fr"
           "1fr 1fr";
 
-    @media only screen and (max-width: 1400px) {
-        grid: "1fr";
-    }
-
     @media only screen and (max-width: 900px) {
-        grid: "1fr 1fr"
-              "1fr 1fr";
+        grid: "1fr 1fr";
+        height: 100vh;
     }
 
     @media only screen and (max-width: 700px) {
         grid: "1fr";
-        margin: 10px 0;
+        margin: 10px 0 50px 0;
     }
+}
+
+.loading-cards {
+    margin: 20px;
 }

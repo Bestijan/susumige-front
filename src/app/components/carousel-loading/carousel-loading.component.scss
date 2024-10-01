@@ -18,34 +18,3 @@
       position: relative;
     }
 }
-
-.carousel-loading {
-  width: 50%;
-  height: inherit;
-  animation: carousel-loading 1500ms linear infinite;
-
-  .loading {
-    width: 10%;
-    height: inherit;
-    background-color: rgba(255, 255, 255, 0.1);
-    animation: loading 1500ms linear infinite;
-  }
-}
-
-@keyframes carousel-loading {
-  0% {
-    transform: translateX(100%);
-  }
-  100% {
-    transform: translateX(0%);
-  }
-}
-
-@keyframes loading {
-  0% {
-    transform: translateX(900%);
-  }
-  100% {
-    transform: translateX(0%);
-  }
-}

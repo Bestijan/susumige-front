@@ -1,11 +1,12 @@
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 import { NewsCard } from 'src/app/models/NewsCard';
+import { HttpService } from 'src/app/services/http-service.service';
 import { NewsRepositoryService } from 'src/app/services/news-repository.service';
+import { SectionService } from 'src/app/services/section.service';
 
-const START = 3;
-const OFFSET = 1;
 const THRESHOLD = 25;
 
 @Component({
@@ -17,24 +18,43 @@ export class MainComponent implements AfterViewInit {
 
   loading = true;
 
+  spinner = false;
+
+  bottomReached = false;
+
+  topReached = false;
+
   @ViewChild(CdkVirtualScrollViewport) virtualScroll!: CdkVirtualScrollViewport;
 
   cardsToShow = new Array<NewsCard>();
+
+  newsCards = new Array<NewsCard>();
 
   start = 0;
 
   end = 3;
 
   constructor(private newsRepo: NewsRepositoryService,
-              private router: Router) {
+              private router: Router,
+              private sectionSvc: SectionService,
+              private httpSvc: HttpService,
+              private cdr: ChangeDetectorRef) {
   }
 
   ngAfterViewInit(): void {
-    this.newsRepo.cardsExists.subscribe((news: NewsCard[]) => {
+    if (this.mobileView) {
+        this.mobileViewNews();
+    } else  {
+      this.newsRepo.cardsExists.subscribe((news: NewsCard[]) => {
         this.cardsToShow = news;
-        if (this.cardsToShow.length > 0) {
-            this.loading = false;
-        }
+        this.sectionSvc.sectionLoading.next(false);
+      });
+    }
+  }
+
+  private mobileViewNews() {
+    this.httpSvc.getMobileViewNews().subscribe((news: NewsCard[]) => {
+        this.cardsToShow = news;
     });
   }
 
@@ -43,31 +63,76 @@ export class MainComponent implements AfterViewInit {
     this.newsRepo.currentNewsObserver.next(null);
   }
 
-  onScroll() {
-    const offset = this.virtualScroll.measureScrollOffset();
-    const viewHeight = this.virtualScroll.getViewportSize();
-    const totalHeight = this.virtualScroll.measureRenderedContentSize();
+  private loadOlderCards() {
+    this.spinner = true;
+    this.newsRepo.dateLeftSidebar = new Date(this.cardsToShow[0].date).toUTCString();
+    this.httpSvc.getOlderNews()
+        .subscribe((result: any) => {
+          if (result) {
+              this.setOldCards(result);
+              this.topReached = false;
+              this.virtualScroll.elementRef.nativeElement.scrollTop = 100;
+          } else {
+              this.topReached = true;
+              this.bottomReached = false;
+          }
+          this.spinner = false;
+          this.cdr.detectChanges();
+        });
+  }
 
-    if (offset + viewHeight >= totalHeight - THRESHOLD && this.end < this.cards.length) {
-      if (this.end > this.cardsToShow.length) {
-          this.start -= OFFSET;
-          this.end -= OFFSET;
-      } else {
-          this.start += OFFSET;
-          this.end += OFFSET;
+  private loadNewerCards() {
+    this.spinner = true;
+    this.newsRepo.dateLeftSidebar = new Date(this.cardsToShow[this.cardsToShow.length - 1].date).toISOString();
+    this.httpSvc.getNewerNews()
+      .subscribe((result: any) => {
+        if (result) {
+            this.setNewCards(result);
+            this.bottomReached = false;
+            this.virtualScroll.elementRef.nativeElement.scrollTop = this.virtualScroll.elementRef.nativeElement.scrollTop - 100;
+        } else {
+            this.bottomReached = true;
+            this.topReached = false;
+        }
+        this.spinner = false;
+        this.cdr.detectChanges();
+      });
+  }
+
+  private setNewCards(result: any) {
+    if (this.cardsToShow.findIndex((lc: NewsCard) => lc.newsId === result.newsId) < 0) {
+        this.cardsToShow.shift();
+        this.cardsToShow.push(result);
+        // this.cardsToShow = this.newsCards;
+        this.loading = false;
+    }
+    this.spinner = false;
+  }
+
+  private setOldCards(result: any) {
+    if (this.cardsToShow.findIndex((lc: NewsCard) => lc.newsId === result.newsId) < 0) {
+        this.cardsToShow.unshift(result);
+        this.cardsToShow.pop();
+        // this.cardsToShow = this.newsCards;
+        this.loading = false;
+    }
+    this.spinner = false;
+  }
+
+  onScroll() {
+    if (!this.spinner) {
+      const offset = this.virtualScroll.measureScrollOffset();
+      const viewHeight = this.virtualScroll.getViewportSize();
+      const totalHeight = this.virtualScroll.measureRenderedContentSize();    
+      if (offset + viewHeight >= totalHeight - THRESHOLD) {
+          if (!this.bottomReached) {
+              this.loadNewerCards();
+          }
+      } else if (offset === 0) {
+        if (!this.topReached) {
+            this.loadOlderCards();
+        }
       }
-      this.cardsToShow = this.cards.slice(this.start, this.end);
-      this.virtualScroll.elementRef.nativeElement.scrollTop = 10;
-    } else if (offset < 10 && this.start > 0) {
-      if (this.start < 0) {
-          this.start += OFFSET;
-          this.end = START;
-      } else {
-          this.start -= OFFSET;
-          this.end -= OFFSET;
-      }
-      this.cardsToShow = this.cards.slice(this.start, this.end);
-      this.virtualScroll.elementRef.nativeElement.scrollTop = 50;
     }
   }
 
@@ -76,7 +141,11 @@ export class MainComponent implements AfterViewInit {
   }
 
   get mobileView(): boolean {
-    return window.innerWidth <= 900;
+      return window.innerWidth <= 900;
+  }
+
+  get sectionLoading(): BehaviorSubject<boolean> {
+      return this.sectionSvc.sectionLoading;
   }
 
 }

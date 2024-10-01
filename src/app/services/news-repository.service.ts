@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { NewsCard } from '../models/NewsCard';
 import { News } from '../models/News';
 import { User } from '../models/User';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NewsRepositoryService {
 
-  private cardsAvailable: BehaviorSubject<NewsCard[]> = new BehaviorSubject(new Array());
+  private cardsAvailable: Subject<NewsCard[]> = new Subject();
 
   private currentCardAvailible = new BehaviorSubject<null>(null);
 
@@ -135,7 +135,7 @@ export class NewsRepositoryService {
       return this.cards;
   }
 
-  get cardsExists(): BehaviorSubject<NewsCard[]> {
+  get cardsExists(): Subject<NewsCard[]> {
       return this.cardsAvailable;
   }
 
