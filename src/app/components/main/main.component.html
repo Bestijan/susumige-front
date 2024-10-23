@@ -7,6 +7,9 @@
                                  </div>
                                  <app-main-card [card]="card" (click) = 'getNews(card.newsId)'></app-main-card>
                              </div>
+                             <ng-container *ngIf="(sectionLoading | async)">
+                              <app-main-loading></app-main-loading>
+                           </ng-container>
 </cdk-virtual-scroll-viewport>
 
 <ng-container *ngIf="!mobileView">

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { NewsCard } from 'src/app/models/NewsCard';
+import { ItemsService } from 'src/app/services/items.service';
 import { NewsRepositoryService } from 'src/app/services/news-repository.service';
 import { SectionService } from 'src/app/services/section.service';
 import { ShowLeftSidebarService } from 'src/app/services/show-left-sidebar.service';
@@ -30,13 +31,17 @@ export class MainNewsComponent implements OnInit {
     constructor(private newsRepo: NewsRepositoryService,
                 private showSidebar: ShowLeftSidebarService,
                 private sectionSvc: SectionService,
-                private router: Router) {
+                private router: Router,
+                private itemsSvc: ItemsService) {
     }
 
     ngOnInit(): void {
         this.sectionSvc.section.subscribe(() => {
             this.section = '';
             this.newsRepo.section = '';
+        });
+        this.itemsSvc.categorySubject.subscribe((sec: string) => {
+            this.chooseSection(sec);
         });
     }
 

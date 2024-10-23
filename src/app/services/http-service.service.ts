@@ -8,9 +8,9 @@ import { UpdateInfoService } from './update-info.service';
 import { Observable } from 'rxjs';
 import { LeftsideCardsService } from './leftside-cards.service';
 import { SectionService } from './section.service';
+import { URL } from '../variables/environment';
 
-// const BASE_URL = 'https://shushumigelaza-25931.nodechef.com/';
-const BASE_URL = 'http://localhost:3000/';
+const BASE_URL = URL;
 @Injectable({
   providedIn: 'root'
 })

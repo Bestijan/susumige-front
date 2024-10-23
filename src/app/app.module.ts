@@ -30,6 +30,7 @@ import { CarouselLoadingComponent } from "./components/carousel-loading/carousel
 import { SideCardLoadingComponent } from './components/side-card-loading/side-card-loading.component';
 import { MainLoadingComponent } from './components/main-loading/main-loading.component';
 import { NewsLoadingComponent } from './components/news-loading/news-loading.component';
+import { DateTransformPipe } from './pipes/date.pipe';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { NewsLoadingComponent } from './components/news-loading/news-loading.com
     MainNewsComponent,
     NewsComponent,
     SafePipe,
+    DateTransformPipe,
     MainComponent,
     CarouselComponent,
     LanguagePopUpComponent,

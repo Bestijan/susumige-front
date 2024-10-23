@@ -1,15 +1,15 @@
 <ng-container *ngIf="!loading">
     <div class="news-wrap">
-        <div class="title">{{title}}</div>
+        <h1 class="title">{{title}}</h1>
         <div class="thumbnail-wrapper">
             <span class="thumbnail-container">
                 <img [src]='fileAsBase64' class="thumbnail"/>
             </span>
             <span class="thumbnail-source-mobile">{{source}}</span>
             <div class="snipet">
-                <div>
+                <h2>
                     {{snipet}}
-                </div>
+                </h2>
                 <div class="adds">
                     ОГЛАС
                 </div>
@@ -26,7 +26,7 @@
                 &nbsp;|&nbsp;
                 <div>Аутор:&nbsp;{{nick}}</div>
                 &nbsp;|&nbsp;
-                <div>{{date | date}}</div>
+                <div>{{date | dateTransform}}</div>
             </div>
             <div class="icons-wrap">
                 <span class="divider">&nbsp;|&nbsp;</span>

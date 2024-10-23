@@ -1,9 +1,10 @@
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { AfterViewInit, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { NewsCard } from 'src/app/models/NewsCard';
 import { HttpService } from 'src/app/services/http-service.service';
+import { ItemsService } from 'src/app/services/items.service';
 import { NewsRepositoryService } from 'src/app/services/news-repository.service';
 import { SectionService } from 'src/app/services/section.service';
 
@@ -14,7 +15,7 @@ const THRESHOLD = 25;
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.scss']
 })
-export class MainComponent implements AfterViewInit {
+export class MainComponent implements OnInit, AfterViewInit {
 
   loading = true;
 
@@ -38,7 +39,14 @@ export class MainComponent implements AfterViewInit {
               private router: Router,
               private sectionSvc: SectionService,
               private httpSvc: HttpService,
-              private cdr: ChangeDetectorRef) {
+              private cdr: ChangeDetectorRef,
+              private itemsSvc: ItemsService) {
+  }
+
+  ngOnInit(): void {
+    this.itemsSvc.categorySubject.subscribe((sec: string) => {    
+        this.sectionNews(sec);
+    });
   }
 
   ngAfterViewInit(): void {
@@ -55,6 +63,13 @@ export class MainComponent implements AfterViewInit {
   private mobileViewNews() {
     this.httpSvc.getMobileViewNews().subscribe((news: NewsCard[]) => {
         this.cardsToShow = news;
+    });
+  }
+
+  private sectionNews(sec: string) {
+    this.httpSvc.getSectionNews(sec);
+    this.newsRepo.cardsExists.subscribe((cards: NewsCard[]) => {
+        this.cardsToShow = cards;
     });
   }
 

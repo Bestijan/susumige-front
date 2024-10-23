@@ -125,17 +125,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     }
 
     chooseSection(s: string) {
-      this.section = this.section === s ? '' : s;
-      this.newsRepo.section = this.section;
-      this.newsRepo.currentNews = null;
-      this.itemsSvc.categorySubject.next(this.section);
-      if (this.section === '') {
-          this.httpSvc.getSection('');
-          this.router.navigate(['/']);
-          this.newsRepository.section = '';
-      } else {
-          this.router.navigate(['section/' + this.section]);
-      }
+      this.itemsSvc.categorySubject.next(s);
       this.openCloseMenu();
       this.openClosedCategory();
     }
